@@ -192,34 +192,55 @@ export const RacePaceAnalysis: React.FC = () => {
     const periods: SafetyCarPeriod[] = [];
     let currentPeriod: { startLap: number; type: 'SC' | 'VSC' | 'RED_FLAG' } | null = null;
 
-    for (const event of events) {
+    // Sort events by date to ensure correct order
+    const sortedEvents = [...events].sort((a, b) => a.date.getTime() - b.date.getTime());
+
+    // Debug: log all SC/VSC related messages
+    if (import.meta.env.DEV) {
+      const scVscEvents = sortedEvents.filter(e => 
+        e.message.toUpperCase().includes('SAFETY CAR') || 
+        e.message.toUpperCase().includes('VSC') ||
+        e.message.toUpperCase().includes('GREEN')
+      );
+      console.log('SC/VSC related events:', scVscEvents.map(e => ({
+        lap: e.lapNumber,
+        message: e.message,
+        category: e.category
+      })));
+    }
+
+    for (const event of sortedEvents) {
       const message = event.message.toUpperCase();
 
-      // SC deployed
+      // Check for VSC ending FIRST
       if (
-        (message.includes('SAFETY CAR DEPLOYED') ||
-          message.includes('SAFETY CAR IN THIS LAP')) &&
-        !message.includes('VIRTUAL')
-      ) {
-        if (!currentPeriod && event.lapNumber) {
-          currentPeriod = { startLap: event.lapNumber, type: 'SC' };
-        }
-      }
-      // VSC deployed
-      else if (
-        message.includes('VIRTUAL SAFETY CAR DEPLOYED') ||
-        message.includes('VSC DEPLOYED')
-      ) {
-        if (!currentPeriod && event.lapNumber) {
-          currentPeriod = { startLap: event.lapNumber, type: 'VSC' };
-        }
-      }
-      // SC/VSC ending
-      else if (
-        message.includes('SAFETY CAR IN THIS LAP') ||
         message.includes('VSC ENDING') ||
-        message.includes('GREEN FLAG')
+        message.includes('VSC END')
       ) {
+        if (currentPeriod && currentPeriod.type === 'VSC' && event.lapNumber) {
+          periods.push({
+            ...currentPeriod,
+            endLap: event.lapNumber,
+          });
+          currentPeriod = null;
+        }
+      }
+      // SC ending - "SAFETY CAR IN THIS LAP" means SC is coming in (ending)
+      else if (
+        message.includes('SAFETY CAR IN THIS LAP') && 
+        !message.includes('VIRTUAL') &&
+        currentPeriod?.type === 'SC'
+      ) {
+        if (event.lapNumber) {
+          periods.push({
+            ...currentPeriod,
+            endLap: event.lapNumber,
+          });
+          currentPeriod = null;
+        }
+      }
+      // Green flag ends any current period
+      else if (message.includes('GREEN FLAG') || message.includes('TRACK CLEAR')) {
         if (currentPeriod && event.lapNumber) {
           periods.push({
             ...currentPeriod,
@@ -228,14 +249,37 @@ export const RacePaceAnalysis: React.FC = () => {
           currentPeriod = null;
         }
       }
+      // SC deployed - only if not already in a period
+      else if (
+        message.includes('SAFETY CAR DEPLOYED') &&
+        !message.includes('VIRTUAL')
+      ) {
+        if (!currentPeriod && event.lapNumber) {
+          currentPeriod = { startLap: event.lapNumber, type: 'SC' };
+        }
+      }
+      // VSC deployed - only if not already in a period
+      else if (
+        message.includes('VIRTUAL SAFETY CAR DEPLOYED') ||
+        (message.includes('VSC') && message.includes('DEPLOYED'))
+      ) {
+        if (!currentPeriod && event.lapNumber) {
+          currentPeriod = { startLap: event.lapNumber, type: 'VSC' };
+        }
+      }
     }
 
-    // Close any open period at the last lap
+    // Close any open period - but only if it's a short period (within 5 laps of end)
+    // This prevents showing full-race periods due to parsing errors
     if (currentPeriod) {
-      const maxLap = Math.max(...events.filter(e => e.lapNumber).map(e => e.lapNumber!), 0);
-      if (maxLap > 0) {
+      const maxLap = Math.max(...sortedEvents.filter(e => e.lapNumber).map(e => e.lapNumber!), 0);
+      if (maxLap > 0 && (maxLap - currentPeriod.startLap) <= 5) {
         periods.push({ ...currentPeriod, endLap: maxLap });
       }
+    }
+
+    if (import.meta.env.DEV) {
+      console.log('Extracted SC/VSC periods:', periods);
     }
 
     return periods;
@@ -749,88 +793,96 @@ export const RacePaceAnalysis: React.FC = () => {
             </div>
 
             {/* Compound Pace Analysis */}
-            {paceData.some((d) => d.compoundPaces.length > 0) && (
-              <div className="pace-stats-section">
-                <h3>Pace by Tire Compound</h3>
-                <div className="stats-table-container">
-                  <table className="stats-table compound-table">
-                    <thead>
-                      <tr>
-                        <th>Driver</th>
-                        {['SOFT', 'MEDIUM', 'HARD'].map((compound) => (
-                          <th key={compound} className="compound-header">
-                            <span
-                              className="compound-dot"
-                              style={{ backgroundColor: getCompoundColor(compound) }}
-                            />
-                            {compound}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {paceData
-                        .sort((a, b) => a.averagePace - b.averagePace)
-                        .map((driver) => {
-                          // Find best pace for each compound across all drivers
-                          const getBestForCompound = (compound: string) => {
-                            const allPaces = paceData
-                              .flatMap((d) => d.compoundPaces)
-                              .filter((cp) => cp.compound.toUpperCase() === compound);
-                            return allPaces.length > 0
-                              ? Math.min(...allPaces.map((cp) => cp.averagePace))
-                              : null;
-                          };
+            {paceData.some((d) => d.compoundPaces.length > 0) && (() => {
+              // Get all unique compounds used in the race, in a logical order
+              const compoundOrder = ['SOFT', 'MEDIUM', 'HARD', 'INTERMEDIATE', 'WET'];
+              const usedCompounds = [...new Set(
+                paceData.flatMap((d) => d.compoundPaces.map((cp) => cp.compound.toUpperCase()))
+              )].sort((a, b) => compoundOrder.indexOf(a) - compoundOrder.indexOf(b));
 
-                          return (
-                            <tr key={driver.driverNumber}>
-                              <td>
-                                <div className="driver-cell">
-                                  <div
-                                    className="driver-color-bar"
-                                    style={{ backgroundColor: driver.teamColor }}
-                                  />
-                                  <span>{driver.driverCode}</span>
-                                </div>
-                              </td>
-                              {['SOFT', 'MEDIUM', 'HARD'].map((compound) => {
-                                const compoundPace = driver.compoundPaces.find(
-                                  (cp) => cp.compound.toUpperCase() === compound
-                                );
-                                const bestPace = getBestForCompound(compound);
-                                const isBest =
-                                  compoundPace &&
-                                  bestPace &&
-                                  Math.abs(compoundPace.averagePace - bestPace) < 0.001;
+              return (
+                <div className="pace-stats-section">
+                  <h3>Pace by Tire Compound</h3>
+                  <div className="stats-table-container">
+                    <table className="stats-table compound-table">
+                      <thead>
+                        <tr>
+                          <th>Driver</th>
+                          {usedCompounds.map((compound) => (
+                            <th key={compound} className="compound-header">
+                              <span
+                                className="compound-dot"
+                                style={{ backgroundColor: getCompoundColor(compound) }}
+                              />
+                              {compound}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {paceData
+                          .sort((a, b) => a.averagePace - b.averagePace)
+                          .map((driver) => {
+                            // Find best pace for each compound across all drivers
+                            const getBestForCompound = (compound: string) => {
+                              const allPaces = paceData
+                                .flatMap((d) => d.compoundPaces)
+                                .filter((cp) => cp.compound.toUpperCase() === compound);
+                              return allPaces.length > 0
+                                ? Math.min(...allPaces.map((cp) => cp.averagePace))
+                                : null;
+                            };
 
-                                return (
-                                  <td
-                                    key={compound}
-                                    className={isBest ? 'best-time' : ''}
-                                  >
-                                    {compoundPace ? (
-                                      <div className="compound-pace-cell">
-                                        <span className="pace-value">
-                                          {formatLapTime(compoundPace.averagePace)}
-                                        </span>
-                                        <span className="lap-count">
-                                          ({compoundPace.laps} laps)
-                                        </span>
-                                      </div>
-                                    ) : (
-                                      <span className="no-data">-</span>
-                                    )}
-                                  </td>
-                                );
-                              })}
-                            </tr>
-                          );
-                        })}
-                    </tbody>
-                  </table>
+                            return (
+                              <tr key={driver.driverNumber}>
+                                <td>
+                                  <div className="driver-cell">
+                                    <div
+                                      className="driver-color-bar"
+                                      style={{ backgroundColor: driver.teamColor }}
+                                    />
+                                    <span>{driver.driverCode}</span>
+                                  </div>
+                                </td>
+                                {usedCompounds.map((compound) => {
+                                  const compoundPace = driver.compoundPaces.find(
+                                    (cp) => cp.compound.toUpperCase() === compound
+                                  );
+                                  const bestPace = getBestForCompound(compound);
+                                  const isBest =
+                                    compoundPace &&
+                                    bestPace &&
+                                    Math.abs(compoundPace.averagePace - bestPace) < 0.001;
+
+                                  return (
+                                    <td
+                                      key={compound}
+                                      className={isBest ? 'best-time' : ''}
+                                    >
+                                      {compoundPace ? (
+                                        <div className="compound-pace-cell">
+                                          <span className="pace-value">
+                                            {formatLapTime(compoundPace.averagePace)}
+                                          </span>
+                                          <span className="lap-count">
+                                            ({compoundPace.laps} laps)
+                                          </span>
+                                        </div>
+                                      ) : (
+                                        <span className="no-data">-</span>
+                                      )}
+                                    </td>
+                                  );
+                                })}
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-              </div>
-            )}
+              );
+            })()}
 
             <div className="pace-insights">
               <h4>Insights</h4>

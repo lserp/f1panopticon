@@ -131,13 +131,27 @@ export const SimpleTelemetry: React.FC = () => {
 
         {lapsError && (
           <div style={{ 
-            padding: '1rem', 
-            background: '#fee', 
-            border: '1px solid #fcc',
+            padding: '1.5rem', 
+            background: '#4a1515', 
+            border: '1px solid #e53e3e',
             borderRadius: '8px',
-            color: '#c33'
+            color: '#fc8181'
           }}>
-            <strong>Error loading lap data:</strong> {lapsError.message}
+            <strong style={{ fontSize: '1.1rem' }}>⚠️ Error loading lap data</strong>
+            <p style={{ margin: '0.75rem 0 0 0', color: '#fca5a5' }}>
+              {lapsError.message.includes('CORS') || lapsError.message.includes('Network') 
+                ? 'The Ergast API is blocking requests from the browser (CORS issue).'
+                : lapsError.message}
+            </p>
+            {selectedSession && selectedSession.season >= 2025 && (
+              <p style={{ margin: '0.75rem 0 0 0', color: '#fca5a5' }}>
+                <strong>Note:</strong> You selected a {selectedSession.season} session. Ergast API only has historical data (up to 2024).
+              </p>
+            )}
+            <p style={{ margin: '0.75rem 0 0 0', color: '#a0aec0', fontSize: '0.9rem' }}>
+              💡 <strong>Tip:</strong> For lap times, try selecting a <strong>2024 race</strong> from the Session Browser. 
+              For detailed telemetry analysis, use the <Link to="/telemetry-viz" style={{ color: '#63b3ed' }}>Telemetry Viz</Link> or <Link to="/race-pace" style={{ color: '#63b3ed' }}>Race Pace</Link> pages which use the OpenF1 API.
+            </p>
           </div>
         )}
 
@@ -258,34 +272,42 @@ export const SimpleTelemetry: React.FC = () => {
           <div style={{ 
             padding: '2rem', 
             textAlign: 'center',
-            background: '#fff3cd',
+            background: '#2d3748',
             borderRadius: '8px',
-            color: '#856404'
+            color: '#e0e0e0',
+            border: '1px solid #4a5568'
           }}>
             <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>📊</div>
             <strong>No lap data available for this session</strong>
-            <p style={{ margin: '0.5rem 0 0 0' }}>
-              Lap timing data may not be available for future or incomplete sessions.
+            <p style={{ margin: '0.75rem 0 0 0', color: '#a0aec0' }}>
+              {selectedSession && selectedSession.season >= 2025 
+                ? `The Ergast API doesn't have ${selectedSession.season} data yet. It only contains historical data.`
+                : 'Lap timing data may not be available for this session.'}
             </p>
-            <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.9rem' }}>
-              Try selecting a completed race from the 2024 season (like Bahrain GP or Saudi Arabian GP).
+            <p style={{ margin: '0.75rem 0 0 0', fontSize: '0.9rem', color: '#a0aec0' }}>
+              💡 Try selecting a completed race from the <strong>2024 season</strong> (like Bahrain GP or Saudi Arabian GP).
+            </p>
+            <p style={{ margin: '0.75rem 0 0 0', fontSize: '0.9rem', color: '#a0aec0' }}>
+              For 2024+ telemetry data, use <Link to="/telemetry-viz" style={{ color: '#63b3ed' }}>Telemetry Viz</Link> or <Link to="/race-pace" style={{ color: '#63b3ed' }}>Race Pace</Link> which use the OpenF1 API.
             </p>
           </div>
         )}
 
-        <div style={{ 
-          marginTop: '2rem', 
-          padding: '1.25rem', 
-          background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', 
-          borderRadius: '8px',
-          color: 'white',
-          boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
-        }}>
-          <strong style={{ fontSize: '1.1rem' }}>✓ Success!</strong>
-          <p style={{ margin: '0.5rem 0 0 0', opacity: 0.95 }}>
-            Session data and lap times are loading correctly from the Ergast API. The data flow is working end-to-end!
-          </p>
-        </div>
+        {!lapsError && laps.length > 0 && (
+          <div style={{ 
+            marginTop: '2rem', 
+            padding: '1.25rem', 
+            background: 'linear-gradient(135deg, #48bb78 0%, #38a169 100%)', 
+            borderRadius: '8px',
+            color: 'white',
+            boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+          }}>
+            <strong style={{ fontSize: '1.1rem' }}>✓ Data loaded successfully!</strong>
+            <p style={{ margin: '0.5rem 0 0 0', opacity: 0.95 }}>
+              Lap times loaded from the Ergast API. For detailed telemetry (speed, throttle, brake), use the Telemetry Viz page.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

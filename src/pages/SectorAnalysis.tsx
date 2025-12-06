@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSessionStore } from '../store/sessionStore';
-import { openf1Api } from '../services/openf1Api';
+import { openf1Api, type StintData } from '../services/openf1Api';
 import type { DriverInfo } from '../types';
 import './SectorAnalysis.css';
 
@@ -12,6 +12,7 @@ interface SectorTime {
   sector2: number | null;
   sector3: number | null;
   lapTime: number | null;
+  compound: string | null;
 }
 
 interface LapInfo {
@@ -27,6 +28,7 @@ export const SectorAnalysis: React.FC = () => {
   const [availableLaps, setAvailableLaps] = useState<LapInfo[]>([]);
   const [selectedLap, setSelectedLap] = useState<number | null>(null);
   const [sectorData, setSectorData] = useState<SectorTime[]>([]);
+  const [stintData, setStintData] = useState<Map<number, StintData[]>>(new Map());
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -157,14 +159,15 @@ export const SectorAnalysis: React.FC = () => {
     loadDrivers();
   }, [selectedSession, sessionKey]);
 
-  // Load available laps when drivers are selected
+  // Load available laps and stint data when drivers are selected
   useEffect(() => {
     if (!selectedSession || !sessionKey || selectedDrivers.length === 0) {
       setAvailableLaps([]);
+      setStintData(new Map());
       return;
     }
 
-    const loadLaps = async () => {
+    const loadLapsAndStints = async () => {
       try {
         setLoading(true);
         setError(null);
@@ -180,6 +183,19 @@ export const SectorAnalysis: React.FC = () => {
         }));
 
         setAvailableLaps(lapInfo);
+
+        // Fetch stint data for all selected drivers
+        const stintPromises = selectedDrivers.map(async (driverNumber) => {
+          const stints = await openf1Api.fetchStints(sessionKey, driverNumber);
+          return { driverNumber, stints };
+        });
+
+        const stintResults = await Promise.all(stintPromises);
+        const newStintData = new Map<number, StintData[]>();
+        stintResults.forEach(({ driverNumber, stints }) => {
+          newStintData.set(driverNumber, stints);
+        });
+        setStintData(newStintData);
       } catch (err) {
         console.error('Error loading laps:', err);
         setError('Failed to load laps');
@@ -188,8 +204,19 @@ export const SectorAnalysis: React.FC = () => {
       }
     };
 
-    loadLaps();
+    loadLapsAndStints();
   }, [selectedSession, sessionKey, selectedDrivers]);
+
+  // Helper to find compound for a lap
+  const getCompoundForLap = (driverNumber: number, lapNumber: number): string | null => {
+    const driverStints = stintData.get(driverNumber);
+    if (!driverStints) return null;
+    
+    const stint = driverStints.find(
+      (s) => lapNumber >= s.lapStart && lapNumber <= s.lapEnd
+    );
+    return stint?.compound || null;
+  };
 
   // Load sector data when lap is selected
   useEffect(() => {
@@ -213,6 +240,7 @@ export const SectorAnalysis: React.FC = () => {
             }
 
             const driver = drivers.find(d => d.number === driverNumber);
+            const compound = getCompoundForLap(driverNumber, selectedLap);
 
             return {
               driverNumber,
@@ -222,6 +250,7 @@ export const SectorAnalysis: React.FC = () => {
               sector2: lap.duration_sector_2 || null,
               sector3: lap.duration_sector_3 || null,
               lapTime: lap.lap_duration || null,
+              compound,
             };
           } catch (err) {
             console.error(`Error loading sector data for driver ${driverNumber}:`, err);
@@ -241,7 +270,7 @@ export const SectorAnalysis: React.FC = () => {
     };
 
     loadSectorData();
-  }, [selectedSession, sessionKey, selectedDrivers, selectedLap, drivers]);
+  }, [selectedSession, sessionKey, selectedDrivers, selectedLap, drivers, stintData]);
 
   const handleDriverToggle = (driverNumber: number) => {
     setSelectedDrivers(prev => {
@@ -308,6 +337,30 @@ export const SectorAnalysis: React.FC = () => {
     };
 
     return teamColors[team] || '#FFFFFF';
+  };
+
+  const getCompoundColor = (compound: string | null): string => {
+    if (!compound) return '#a0aec0';
+    const compoundColors: Record<string, string> = {
+      SOFT: '#e8002d',
+      MEDIUM: '#f6e05e',
+      HARD: '#e0e0e0',
+      INTERMEDIATE: '#48bb78',
+      WET: '#4299e1',
+    };
+    return compoundColors[compound.toUpperCase()] || '#a0aec0';
+  };
+
+  const getCompoundShort = (compound: string | null): string => {
+    if (!compound) return '?';
+    const shorts: Record<string, string> = {
+      SOFT: 'S',
+      MEDIUM: 'M',
+      HARD: 'H',
+      INTERMEDIATE: 'I',
+      WET: 'W',
+    };
+    return shorts[compound.toUpperCase()] || '?';
   };
 
   if (!selectedSession) {
@@ -390,6 +443,7 @@ export const SectorAnalysis: React.FC = () => {
                 <thead>
                   <tr>
                     <th>Driver</th>
+                    <th>Tire</th>
                     <th>Sector 1</th>
                     <th>Sector 2</th>
                     <th>Sector 3</th>
@@ -407,6 +461,18 @@ export const SectorAnalysis: React.FC = () => {
                           />
                           <span>{data.driverName}</span>
                         </div>
+                      </td>
+                      <td>
+                        <span
+                          className="compound-badge"
+                          style={{
+                            backgroundColor: getCompoundColor(data.compound),
+                            color: data.compound?.toUpperCase() === 'HARD' || data.compound?.toUpperCase() === 'MEDIUM' ? '#1a202c' : '#fff',
+                          }}
+                          title={data.compound || 'Unknown'}
+                        >
+                          {getCompoundShort(data.compound)}
+                        </span>
                       </td>
                       <td className={isBestSector(data.sector1, 1) ? 'best-time' : ''}>
                         <div className="time-cell">

@@ -249,6 +249,19 @@
   font-weight: 700;
 }
 
+/* Compound badge */
+.compound-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: help;
+}
+
 /* Insights */
 .sector-insights {
   background: #2d3748;
