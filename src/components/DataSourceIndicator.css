@@ -1,0 +1,35 @@
+.data-source-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.data-source-indicator--compact {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 4px;
+  border: 2px solid;
+  background: white;
+}
+
+.data-source-indicator__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+}
+
+.data-source-indicator__label {
+  line-height: 1;
+}
+
+.data-source-indicator__timestamp {
+  font-size: 0.75rem;
+  color: #718096;
+}

@@ -1,0 +1,280 @@
+.correlation-analysis {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.analysis-header {
+  padding: 1.5rem 2rem;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.analysis-header h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.analysis-description {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.analysis-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.parameter-selector {
+  width: 280px;
+  background: white;
+  border-right: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.selector-section {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.selector-section h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.target-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.target-selector label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.target-selector input[type='radio'] {
+  cursor: pointer;
+}
+
+.parameter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.parameter-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.parameter-checkbox input[type='checkbox'] {
+  cursor: pointer;
+}
+
+.data-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+}
+
+.summary-label {
+  color: #666;
+}
+
+.summary-value {
+  font-weight: 600;
+  color: #333;
+}
+
+.analysis-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  background: #fafafa;
+}
+
+.results-section,
+.visualization-section,
+.heatmap-section {
+  padding: 2rem;
+  background: white;
+  margin-bottom: 1rem;
+}
+
+.results-section h2,
+.visualization-section h2,
+.heatmap-section h2 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.results-table {
+  overflow-x: auto;
+}
+
+.results-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.results-table th,
+.results-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.results-table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.results-table td {
+  font-size: 0.875rem;
+}
+
+.coefficient {
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.coefficient.positive {
+  background: #d4edda;
+  color: #155724;
+}
+
+.coefficient.negative {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.strength-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.strength-badge.strength-strong {
+  background: #d4edda;
+  color: #155724;
+}
+
+.strength-badge.strength-moderate {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+.strength-badge.strength-weak {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.strength-badge.strength-none {
+  background: #f8f9fa;
+  color: #6c757d;
+}
+
+.scatter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.scatter-plot {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 1rem;
+}
+
+.scatter-plot h3 {
+  margin: 0 0 1rem 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.plot-container {
+  background: white;
+  border-radius: 4px;
+  padding: 0.5rem;
+}
+
+.scatter-svg {
+  width: 100%;
+  height: auto;
+}
+
+.heatmap-container {
+  overflow-x: auto;
+}
+
+.heatmap-table {
+  border-collapse: collapse;
+  font-size: 0.75rem;
+}
+
+.heatmap-table th,
+.heatmap-table td {
+  padding: 0.75rem;
+  text-align: center;
+  border: 1px solid #e0e0e0;
+  min-width: 60px;
+}
+
+.heatmap-table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #666;
+}
+
+.heatmap-table td {
+  font-weight: 600;
+  color: #333;
+}
+
+@media (max-width: 1024px) {
+  .analysis-layout {
+    flex-direction: column;
+  }
+
+  .parameter-selector {
+    width: 100%;
+    max-height: 300px;
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .scatter-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,229 @@
+.dashboard-config-manager {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.config-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.config-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.save-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.save-btn:hover {
+  background: #218838;
+}
+
+.save-dialog {
+  background: #f8f9fa;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.save-dialog input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+}
+
+.dialog-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.confirm-btn,
+.cancel-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.confirm-btn {
+  background: #007bff;
+  color: white;
+}
+
+.confirm-btn:hover {
+  background: #0056b3;
+}
+
+.cancel-btn {
+  background: #6c757d;
+  color: white;
+}
+
+.cancel-btn:hover {
+  background: #5a6268;
+}
+
+.config-list {
+  margin-bottom: 1.5rem;
+}
+
+.empty-message {
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+  padding: 2rem;
+}
+
+.config-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s;
+  border: 2px solid transparent;
+}
+
+.config-item:hover {
+  background: #e9ecef;
+}
+
+.config-item.active {
+  border-color: #667eea;
+  background: #f0f2ff;
+}
+
+.config-info h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.config-meta {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.config-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.load-btn,
+.delete-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.load-btn:hover {
+  background: rgba(0, 123, 255, 0.1);
+}
+
+.delete-btn:hover {
+  background: rgba(220, 53, 69, 0.1);
+}
+
+.preset-templates {
+  border-top: 1px solid #dee2e6;
+  padding-top: 1.5rem;
+}
+
+.preset-templates h4 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.template-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.5rem;
+}
+
+.template-btn {
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.template-btn:hover {
+  background: #5568d3;
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .dashboard-config-manager {
+    background: #2d2d2d;
+  }
+
+  .config-header h3,
+  .config-info h4,
+  .preset-templates h4 {
+    color: #e0e0e0;
+  }
+
+  .save-dialog {
+    background: #3a3a3a;
+  }
+
+  .save-dialog input {
+    background: #2d2d2d;
+    border-color: #555;
+    color: #e0e0e0;
+  }
+
+  .config-item {
+    background: #3a3a3a;
+  }
+
+  .config-item:hover {
+    background: #454545;
+  }
+
+  .config-item.active {
+    background: #3a3a5a;
+  }
+
+  .preset-templates {
+    border-top-color: #555;
+  }
+}

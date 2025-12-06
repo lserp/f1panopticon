@@ -1,0 +1,131 @@
+.dashboard-controls {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.controls-section {
+  margin-bottom: 2rem;
+}
+
+.controls-section:last-child {
+  margin-bottom: 0;
+}
+
+.controls-section h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.chart-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.chart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background: #f8f9fa;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.chart-item:hover {
+  background: #e9ecef;
+}
+
+.chart-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  flex: 1;
+}
+
+.chart-checkbox input[type='checkbox'] {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+}
+
+.chart-checkbox span {
+  font-size: 0.95rem;
+  color: #495057;
+}
+
+.remove-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.remove-btn:hover {
+  background: #c82333;
+}
+
+.add-chart-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.5rem;
+}
+
+.add-chart-btn {
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.add-chart-btn:hover:not(:disabled) {
+  background: #5568d3;
+}
+
+.add-chart-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.warning-text {
+  margin-top: 0.5rem;
+  color: #dc3545;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .dashboard-controls {
+    background: #2d2d2d;
+  }
+
+  .controls-section h3 {
+    color: #e0e0e0;
+  }
+
+  .chart-item {
+    background: #3a3a3a;
+  }
+
+  .chart-item:hover {
+    background: #454545;
+  }
+
+  .chart-checkbox span {
+    color: #b0b0b0;
+  }
+}

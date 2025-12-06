@@ -1,0 +1,34 @@
+.cache-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.cache-indicator--compact {
+  padding: 0.125rem 0.25rem;
+  font-size: 0.875rem;
+}
+
+.cache-indicator--hit {
+  background: #c6f6d5;
+  color: #22543d;
+}
+
+.cache-indicator--miss {
+  background: #bee3f8;
+  color: #2c5282;
+}
+
+.cache-indicator__icon {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1em;
+}
+
+.cache-indicator__label {
+  line-height: 1;
+}

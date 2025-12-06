@@ -1,0 +1,293 @@
+/**
+ * Touch-Friendly Styles
+ * Requirements: Touch-friendly interactions, optimize chart manipulation for touch
+ */
+
+/* Touch-friendly button sizes (minimum 44x44px for accessibility) */
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Larger touch targets for tablet */
+@media (min-width: 768px) and (max-width: 1279px) {
+  .touch-target {
+    min-width: 48px;
+    min-height: 48px;
+  }
+
+  button,
+  .button,
+  a.button {
+    min-height: 48px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+/* Remove tap highlight on touch devices */
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+/* Touch-friendly interactive elements */
+button,
+.button,
+a.button,
+input[type='button'],
+input[type='submit'],
+input[type='reset'] {
+  min-height: 44px;
+  padding: 0.5rem 1rem;
+  touch-action: manipulation;
+}
+
+/* Touch-friendly form inputs */
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='number'],
+input[type='tel'],
+input[type='url'],
+input[type='search'],
+textarea,
+select {
+  min-height: 44px;
+  padding: 0.75rem;
+  font-size: 16px; /* Prevents zoom on iOS */
+  touch-action: manipulation;
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  input[type='text'],
+  input[type='email'],
+  input[type='password'],
+  input[type='number'],
+  input[type='tel'],
+  input[type='url'],
+  input[type='search'],
+  textarea,
+  select {
+    min-height: 48px;
+    padding: 0.875rem;
+  }
+}
+
+/* Touch-friendly links */
+a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+}
+
+/* Touch-friendly checkboxes and radio buttons */
+input[type='checkbox'],
+input[type='radio'] {
+  min-width: 24px;
+  min-height: 24px;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  input[type='checkbox'],
+  input[type='radio'] {
+    min-width: 28px;
+    min-height: 28px;
+  }
+}
+
+/* Disable text selection during touch interactions */
+.touch-draggable {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  touch-action: none;
+}
+
+/* Enable smooth scrolling for touch */
+.touch-scrollable {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* Touch-friendly chart container */
+.chart-touch-container {
+  touch-action: pan-x pan-y pinch-zoom;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Pinch zoom indicator */
+.pinch-zoom-active {
+  cursor: zoom-in;
+}
+
+.pinch-zoom-active.zoomed {
+  cursor: zoom-out;
+}
+
+/* Swipe indicator */
+.swipe-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.swipe-indicator.active {
+  opacity: 1;
+}
+
+/* Touch feedback */
+.touch-feedback {
+  position: relative;
+  overflow: hidden;
+}
+
+.touch-feedback::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, opacity 0.3s;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.touch-feedback:active::after {
+  width: 200px;
+  height: 200px;
+  opacity: 1;
+}
+
+/* Prevent pull-to-refresh on charts */
+.chart-container {
+  overscroll-behavior-y: contain;
+  touch-action: pan-x pan-y pinch-zoom;
+}
+
+/* Touch-friendly slider */
+input[type='range'] {
+  min-height: 44px;
+  cursor: pointer;
+  touch-action: none;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+input[type='range']::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  input[type='range']::-webkit-slider-thumb {
+    width: 28px;
+    height: 28px;
+  }
+
+  input[type='range']::-moz-range-thumb {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* Touch-friendly dropdown */
+select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 12px;
+  padding-right: 2.5rem;
+}
+
+/* Touch-friendly modal close button */
+.modal-close,
+.dialog-close {
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  font-size: 1.5rem;
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .modal-close,
+  .dialog-close {
+    min-width: 48px;
+    min-height: 48px;
+    font-size: 1.75rem;
+  }
+}
+
+/* Touch-friendly tabs */
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tab {
+  min-height: 44px;
+  padding: 0.75rem 1.5rem;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .tab {
+    min-height: 48px;
+    padding: 0.875rem 1.75rem;
+  }
+}
+
+/* Disable hover effects on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  button:hover,
+  .button:hover,
+  a:hover {
+    /* Remove hover effects on touch devices */
+    opacity: 1;
+  }
+
+  /* Add active state instead */
+  button:active,
+  .button:active,
+  a:active {
+    opacity: 0.7;
+    transform: scale(0.98);
+  }
+}

@@ -1,0 +1,301 @@
+/**
+ * Accessibility styles for WCAG 2.1 AA compliance
+ */
+
+/* Focus indicators for all focusable elements */
+*:focus {
+  outline: 2px solid #0066cc;
+  outline-offset: 2px;
+}
+
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 2px solid #0066cc;
+  outline-offset: 2px;
+}
+
+/* Enhanced focus for buttons */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #0066cc;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.2);
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --focus-color: #000000;
+    --text-color: #000000;
+    --background-color: #ffffff;
+    --border-color: #000000;
+  }
+
+  * {
+    border-color: var(--border-color) !important;
+  }
+
+  *:focus-visible {
+    outline: 3px solid var(--focus-color);
+    outline-offset: 3px;
+  }
+
+  button,
+  a {
+    border: 2px solid var(--border-color) !important;
+  }
+}
+
+/* High contrast mode class (user-toggled) */
+.high-contrast {
+  --primary-color: #000000;
+  --secondary-color: #ffffff;
+  --accent-color: #0000ff;
+  --error-color: #ff0000;
+  --success-color: #008000;
+  --warning-color: #ff8c00;
+  --text-color: #000000;
+  --background-color: #ffffff;
+  --border-color: #000000;
+}
+
+.high-contrast * {
+  color: var(--text-color) !important;
+  background-color: var(--background-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+.high-contrast button,
+.high-contrast a,
+.high-contrast input,
+.high-contrast select,
+.high-contrast textarea {
+  border: 2px solid var(--border-color) !important;
+}
+
+.high-contrast button:hover,
+.high-contrast a:hover {
+  background-color: var(--accent-color) !important;
+  color: var(--secondary-color) !important;
+}
+
+.high-contrast *:focus-visible {
+  outline: 4px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Color contrast improvements for light mode */
+@media (prefers-color-scheme: light) {
+  :root {
+    /* Ensure 4.5:1 contrast ratio for normal text */
+    --text-primary: #1a1a1a;
+    --text-secondary: #4a4a4a;
+    --link-color: #0056b3;
+    --link-hover: #003d82;
+    
+    /* Ensure 3:1 contrast ratio for large text and UI components */
+    --border-color: #767676;
+    --disabled-color: #767676;
+  }
+
+  body {
+    color: var(--text-primary);
+  }
+
+  a {
+    color: var(--link-color);
+  }
+
+  a:hover {
+    color: var(--link-hover);
+  }
+
+  button:disabled,
+  input:disabled {
+    color: var(--disabled-color);
+    border-color: var(--disabled-color);
+  }
+}
+
+/* Color contrast improvements for dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Ensure 4.5:1 contrast ratio for normal text */
+    --text-primary: #ffffff;
+    --text-secondary: #e0e0e0;
+    --link-color: #66b3ff;
+    --link-hover: #99ccff;
+    
+    /* Ensure 3:1 contrast ratio for large text and UI components */
+    --border-color: #999999;
+    --disabled-color: #999999;
+  }
+
+  body {
+    color: var(--text-primary);
+    background-color: #1a1a1a;
+  }
+
+  a {
+    color: var(--link-color);
+  }
+
+  a:hover {
+    color: var(--link-hover);
+  }
+
+  button:disabled,
+  input:disabled {
+    color: var(--disabled-color);
+    border-color: var(--disabled-color);
+  }
+}
+
+/* Skip to main content link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #0066cc;
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  z-index: 100;
+  border-radius: 0 0 4px 0;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 3px solid #ffffff;
+  outline-offset: 2px;
+}
+
+/* Ensure sufficient touch target sizes (44x44px minimum) */
+@media (pointer: coarse) {
+  button,
+  a,
+  input[type="checkbox"],
+  input[type="radio"],
+  select {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 12px;
+  }
+}
+
+/* Visual focus indicators for keyboard navigation */
+.keyboard-navigation *:focus {
+  outline: 3px solid #0066cc;
+  outline-offset: 2px;
+}
+
+/* Ensure text remains visible during webfont load */
+@font-face {
+  font-display: swap;
+}
+
+/* Improve readability */
+body {
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.3;
+}
+
+p {
+  max-width: 70ch;
+}
+
+/* Ensure interactive elements are distinguishable */
+button,
+a,
+input,
+select,
+textarea {
+  cursor: pointer;
+}
+
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Improve form accessibility */
+label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+input:required,
+select:required,
+textarea:required {
+  border-left: 3px solid #0066cc;
+}
+
+input:invalid,
+select:invalid,
+textarea:invalid {
+  border-color: #d32f2f;
+}
+
+/* Error states with sufficient contrast */
+.error,
+[aria-invalid="true"] {
+  border-color: #d32f2f;
+  color: #d32f2f;
+}
+
+.error-message {
+  color: #d32f2f;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* Success states with sufficient contrast */
+.success {
+  border-color: #2e7d32;
+  color: #2e7d32;
+}
+
+.success-message {
+  color: #2e7d32;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* Warning states with sufficient contrast */
+.warning {
+  border-color: #f57c00;
+  color: #f57c00;
+}
+
+.warning-message {
+  color: #f57c00;
+  font-weight: 600;
+  margin-top: 4px;
+}

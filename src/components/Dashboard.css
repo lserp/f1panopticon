@@ -1,0 +1,295 @@
+.dashboard {
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  background-color: #f5f5f5;
+}
+
+.dashboard-grid {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Responsive dashboard padding */
+@media (min-width: 768px) and (max-width: 1279px) {
+  .dashboard {
+    padding: 0.75rem;
+  }
+}
+
+@media (min-width: 1920px) and (max-width: 2559px) {
+  .dashboard {
+    padding: 1.25rem;
+  }
+}
+
+@media (min-width: 2560px) and (max-width: 3839px) {
+  .dashboard {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 3840px) {
+  .dashboard {
+    padding: 2rem;
+  }
+}
+
+.dashboard-chart {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  cursor: move;
+  user-select: none;
+}
+
+.chart-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Responsive chart header */
+@media (min-width: 1920px) and (max-width: 2559px) {
+  .chart-header {
+    padding: 0.875rem 1.25rem;
+  }
+
+  .chart-title {
+    font-size: 1.125rem;
+  }
+}
+
+@media (min-width: 2560px) and (max-width: 3839px) {
+  .chart-header {
+    padding: 1rem 1.5rem;
+  }
+
+  .chart-title {
+    font-size: 1.25rem;
+  }
+}
+
+@media (min-width: 3840px) {
+  .chart-header {
+    padding: 1.25rem 2rem;
+  }
+
+  .chart-title {
+    font-size: 1.5rem;
+  }
+}
+
+.fullscreen-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fullscreen-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Touch-friendly fullscreen button on tablet */
+@media (min-width: 768px) and (max-width: 1279px) {
+  .fullscreen-btn {
+    min-width: 48px;
+    min-height: 48px;
+    font-size: 1.125rem;
+  }
+}
+
+/* Active state for touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .fullscreen-btn:active {
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(0.95);
+  }
+}
+
+.chart-content {
+  flex: 1;
+  padding: 1rem;
+  overflow: auto;
+  min-height: 0;
+}
+
+.placeholder-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #6c757d;
+  font-style: italic;
+  text-align: center;
+  padding: 2rem;
+}
+
+/* Fullscreen mode */
+.dashboard-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  background: white;
+  padding: 0;
+}
+
+.dashboard-fullscreen .dashboard-chart {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.dashboard-fullscreen .chart-header {
+  cursor: default;
+}
+
+.dashboard-fullscreen .chart-content {
+  height: calc(100% - 3rem);
+}
+
+/* React Grid Layout overrides */
+.react-grid-item {
+  transition: all 200ms ease;
+  transition-property: left, top, width, height;
+}
+
+.react-grid-item.cssTransforms {
+  transition-property: transform, width, height;
+}
+
+.react-grid-item.resizing {
+  transition: none;
+  z-index: 100;
+  will-change: width, height;
+}
+
+.react-grid-item.react-draggable-dragging {
+  transition: none;
+  z-index: 100;
+  will-change: transform;
+}
+
+.react-grid-item.dropping {
+  visibility: hidden;
+}
+
+.react-grid-item.react-grid-placeholder {
+  background: #667eea;
+  opacity: 0.2;
+  transition-duration: 100ms;
+  z-index: 2;
+  border-radius: 8px;
+}
+
+.react-resizable-handle {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+}
+
+.react-resizable-handle-sw {
+  bottom: 0;
+  left: 0;
+  cursor: sw-resize;
+  transform: rotate(90deg);
+}
+
+.react-resizable-handle-se {
+  bottom: 0;
+  right: 0;
+  cursor: se-resize;
+}
+
+.react-resizable-handle-nw {
+  top: 0;
+  left: 0;
+  cursor: nw-resize;
+  transform: rotate(180deg);
+}
+
+.react-resizable-handle-ne {
+  top: 0;
+  right: 0;
+  cursor: ne-resize;
+  transform: rotate(270deg);
+}
+
+.react-resizable-handle-w,
+.react-resizable-handle-e {
+  top: 50%;
+  margin-top: -10px;
+  cursor: ew-resize;
+}
+
+.react-resizable-handle-w {
+  left: 0;
+  transform: rotate(135deg);
+}
+
+.react-resizable-handle-e {
+  right: 0;
+  transform: rotate(315deg);
+}
+
+.react-resizable-handle-n,
+.react-resizable-handle-s {
+  left: 50%;
+  margin-left: -10px;
+  cursor: ns-resize;
+}
+
+.react-resizable-handle-n {
+  top: 0;
+  transform: rotate(225deg);
+}
+
+.react-resizable-handle-s {
+  bottom: 0;
+  transform: rotate(45deg);
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .dashboard {
+    background-color: #1a1a1a;
+  }
+
+  .dashboard-chart {
+    background: #2d2d2d;
+    color: #e0e0e0;
+  }
+
+  .dashboard-fullscreen {
+    background: #2d2d2d;
+  }
+}

@@ -1,0 +1,127 @@
+.error-display {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: #fff5f5;
+  border: 1px solid #feb2b2;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+.error-display--compact {
+  padding: 1rem;
+  align-items: center;
+}
+
+.error-display__icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.error-display__content {
+  flex: 1;
+}
+
+.error-display__title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #c53030;
+}
+
+.error-display__message {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #742a2a;
+}
+
+.error-display--compact .error-display__message {
+  font-size: 0.875rem;
+}
+
+.error-display__details {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: white;
+  border: 1px solid #feb2b2;
+  border-radius: 4px;
+}
+
+.error-display__details summary {
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #c53030;
+  user-select: none;
+}
+
+.error-display__details summary:hover {
+  color: #9b2c2c;
+}
+
+.error-display__details-content {
+  margin: 0.75rem 0 0 0;
+  padding: 0.75rem;
+  background: #f7fafc;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.error-display__actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.error-display__button {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.error-display__button--small {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+}
+
+.error-display__button--primary {
+  background: #e53e3e;
+  color: white;
+}
+
+.error-display__button--primary:hover {
+  background: #c53030;
+}
+
+.error-display__button--secondary {
+  background: #fed7d7;
+  color: #742a2a;
+}
+
+.error-display__button--secondary:hover {
+  background: #feb2b2;
+}
+
+.error-display__button--text {
+  background: transparent;
+  color: #c53030;
+}
+
+.error-display__button--text:hover {
+  background: #fed7d7;
+}
+
+.error-display__button:active {
+  transform: scale(0.98);
+}

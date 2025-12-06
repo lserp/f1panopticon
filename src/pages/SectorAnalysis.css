@@ -1,0 +1,295 @@
+.sector-analysis {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.sector-analysis-header {
+  margin-bottom: 2rem;
+}
+
+.sector-analysis-header h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #e10600;
+}
+
+.sector-analysis-header .subtitle {
+  color: #666;
+  font-size: 1rem;
+}
+
+.no-session {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  color: white;
+}
+
+.no-session h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.no-session p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.error-message {
+  background: #fee;
+  border: 1px solid #fcc;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  color: #c00;
+}
+
+.sector-analysis-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Driver Selection */
+.driver-selection-section h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.driver-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.driver-card {
+  background: white;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.driver-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.driver-card.selected {
+  border-width: 3px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.driver-number {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.driver-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: #333;
+}
+
+.driver-team {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+/* Lap Selection */
+.lap-selection-section h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.lap-buttons-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.lap-button {
+  background: white;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 120px;
+}
+
+.lap-button:hover {
+  border-color: #e10600;
+  transform: translateY(-1px);
+}
+
+.lap-button.selected {
+  background: #e10600;
+  border-color: #e10600;
+  color: white;
+}
+
+.lap-number {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.lap-time {
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  opacity: 0.8;
+}
+
+.lap-button.selected .lap-time {
+  opacity: 1;
+}
+
+/* Sector Comparison */
+.sector-comparison-section h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.sector-table-container {
+  overflow-x: auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sector-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sector-table thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.sector-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.sector-table tbody tr {
+  border-bottom: 1px solid #eee;
+  transition: background 0.2s;
+}
+
+.sector-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.sector-table td {
+  padding: 1rem;
+  font-size: 0.95rem;
+}
+
+.driver-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.driver-color-bar {
+  width: 4px;
+  height: 30px;
+  border-radius: 2px;
+}
+
+.time-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.time-cell .time {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.time-cell .delta {
+  font-size: 0.85rem;
+  color: #999;
+}
+
+.best-time {
+  background: #d4edda !important;
+}
+
+.best-time .time {
+  color: #155724;
+  font-weight: 700;
+}
+
+/* Insights */
+.sector-insights {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+.sector-insights h4 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.sector-insights ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sector-insights li {
+  padding: 0.5rem 0;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+/* Loading */
+.loading-spinner {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sector-analysis {
+    padding: 1rem;
+  }
+
+  .driver-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .sector-table {
+    font-size: 0.85rem;
+  }
+
+  .sector-table th,
+  .sector-table td {
+    padding: 0.75rem 0.5rem;
+  }
+}

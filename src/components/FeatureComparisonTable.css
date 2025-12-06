@@ -1,0 +1,292 @@
+.feature-comparison-table {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.table-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.table-header h2 {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 600;
+  color: #333;
+}
+
+.table-description {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.comparison-grid {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.grid-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  background: #f5f5f5;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.feature-column {
+  padding: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.tier-column {
+  padding: 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tier-column.free-tier {
+  border-left: 1px solid #e0e0e0;
+}
+
+.tier-column.premium-tier {
+  border-left: 1px solid #e0e0e0;
+  background: #fff3e0;
+}
+
+.tier-label {
+  font-weight: 600;
+  font-size: 16px;
+  color: #333;
+}
+
+.tier-price {
+  font-size: 12px;
+  color: #666;
+}
+
+.category-section {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.category-section:last-child {
+  border-bottom: none;
+}
+
+.category-header {
+  background: #fafafa;
+  padding: 12px 16px;
+  font-weight: 600;
+  color: #555;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.feature-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.feature-row:last-child {
+  border-bottom: none;
+}
+
+.feature-info {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.feature-name {
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.feature-description {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.tier-cell {
+  padding: 16px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid #f0f0f0;
+}
+
+.tier-cell.premium-tier {
+  background: #fffbf5;
+}
+
+.check-icon {
+  color: #4caf50;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.cross-icon {
+  color: #ccc;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.current-tier-indicator {
+  margin-top: 24px;
+  padding: 16px;
+  background: #f9f9f9;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.indicator-label {
+  font-weight: 500;
+  color: #666;
+}
+
+.indicator-value {
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.indicator-value.free {
+  background: #e0e0e0;
+  color: #666;
+}
+
+.indicator-value.premium {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.upgrade-cta {
+  margin-top: 24px;
+  padding: 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 8px;
+  text-align: center;
+  color: white;
+}
+
+.upgrade-cta p {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.upgrade-btn {
+  background: white;
+  color: #667eea;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.upgrade-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .grid-header,
+  .feature-row {
+    grid-template-columns: 1fr;
+  }
+
+  .tier-column,
+  .tier-cell {
+    border-left: none;
+    border-top: 1px solid #e0e0e0;
+  }
+
+  .tier-column.premium-tier,
+  .tier-cell.premium-tier {
+    background: transparent;
+  }
+
+  .feature-comparison-table {
+    padding: 16px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .feature-comparison-table {
+    background: #1e1e1e;
+    color: #e0e0e0;
+  }
+
+  .table-header h2,
+  .feature-name,
+  .tier-label {
+    color: #e0e0e0;
+  }
+
+  .table-description,
+  .feature-description,
+  .tier-price {
+    color: #b0b0b0;
+  }
+
+  .comparison-grid {
+    border-color: #333;
+  }
+
+  .grid-header {
+    background: #2a2a2a;
+    border-bottom-color: #333;
+  }
+
+  .tier-column.free-tier,
+  .tier-cell {
+    border-left-color: #333;
+  }
+
+  .tier-column.premium-tier {
+    background: #2d2416;
+  }
+
+  .tier-cell.premium-tier {
+    background: #2d2416;
+  }
+
+  .category-header {
+    background: #252525;
+    color: #b0b0b0;
+  }
+
+  .feature-row {
+    border-bottom-color: #2a2a2a;
+  }
+
+  .current-tier-indicator {
+    background: #2a2a2a;
+  }
+
+  .cross-icon {
+    color: #555;
+  }
+}
