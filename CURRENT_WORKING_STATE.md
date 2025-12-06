@@ -62,26 +62,22 @@ Configure app preferences.
 ## ⚠️ Partially Working / Known Issues
 
 ### 5. Sector Analysis (`/sector-analysis`)
-**Status:** ⚠️ Not Working
+**Status:** ⚠️ Needs Testing
 
 Compare sector times between drivers for a specific lap.
 
-**Issue:** Circuit name matching between Ergast and OpenF1 APIs is failing for some circuits. The feature shows "This session does not have OpenF1 data" even for 2024 sessions.
+**Recent Fix:** Added `sessionKey` to the driver loading effect dependency array. The drivers should now load correctly when a 2024 session is selected.
 
-**Root Cause:** The circuit alias mapping doesn't cover all variations of circuit names used by the two APIs.
-
-**Workaround:** None currently. Feature needs debugging.
+**To Test:** Select a 2024 race session and verify drivers appear in the selection grid.
 
 ### 6. Race Pace (`/race-pace`)
-**Status:** ⚠️ Not Working
+**Status:** ⚠️ Needs Testing
 
 Compare lap time consistency and race pace between drivers.
 
-**Issue:** Same as Sector Analysis - circuit name matching is failing.
+**Recent Fix:** Added `sessionKey` to the driver loading effect dependency array. The drivers should now load correctly when a 2024 session is selected.
 
-**Root Cause:** Same as above.
-
-**Workaround:** None currently. Feature needs debugging.
+**To Test:** Select a 2024 race session and verify drivers appear in the selection grid.
 
 ### 7. Session Replay (`/replay`)
 **Status:** ⚠️ Not Working
@@ -123,7 +119,7 @@ Replay a session with animated car positions.
 
 | Feature | Session Browser | Lap Times | Telemetry Viz | Sector Analysis | Race Pace | Session Replay | Settings |
 |---------|----------------|-----------|---------------|-----------------|-----------|----------------|----------|
-| Status | ✅ Working | ✅ Working | ✅ Working | ⚠️ Broken | ⚠️ Broken | ⚠️ Broken | ✅ Working |
+| Status | ✅ Working | ✅ Working | ✅ Working | ⚠️ Needs Test | ⚠️ Needs Test | ⚠️ Broken | ✅ Working |
 | Data Source | Ergast + Cache | Ergast | OpenF1 | OpenF1 | OpenF1 | N/A | Local |
 | 2024 Support | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | N/A |
 | 2023 Support | ✅ | ✅ | ⚠️ Limited | ❌ | ❌ | ❌ | N/A |
@@ -139,9 +135,10 @@ Replay a session with animated car positions.
    - Shows distance, driver codes, and values
    - Works for Speed, Throttle, Brake, and Gear charts
 
-2. **Attempted to fix Sector Analysis and Race Pace**
+2. **Fixed Sector Analysis and Race Pace driver loading**
    - Added circuit name mapping
-   - Still not working due to matching issues
+   - Fixed dependency array bug: driver loading effect now includes `sessionKey`
+   - Drivers should now load correctly for 2024 sessions
 
 3. **Cleaned up unused features**
    - Removed Dashboard, Strategy Analysis, Driver Comparison, Correlation Analysis

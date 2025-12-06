@@ -155,7 +155,7 @@ export const SectorAnalysis: React.FC = () => {
     };
 
     loadDrivers();
-  }, [selectedSession]);
+  }, [selectedSession, sessionKey]);
 
   // Load available laps when drivers are selected
   useEffect(() => {

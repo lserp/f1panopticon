@@ -101,6 +101,64 @@ interface OpenF1Weather {
   wind_speed: number;
 }
 
+interface OpenF1Pit {
+  date: string;
+  driver_number: number;
+  lap_number: number;
+  meeting_key: number;
+  pit_duration: number;
+  session_key: number;
+}
+
+export interface PitStopData {
+  driverNumber: number;
+  lapNumber: number;
+  pitDuration: number;
+  date: Date;
+}
+
+interface OpenF1Stint {
+  driver_number: number;
+  lap_start: number;
+  lap_end: number;
+  compound: string;
+  stint_number: number;
+  tyre_age_at_start: number;
+  meeting_key: number;
+  session_key: number;
+}
+
+export interface StintData {
+  driverNumber: number;
+  lapStart: number;
+  lapEnd: number;
+  compound: string;
+  stintNumber: number;
+  tyreAgeAtStart: number;
+}
+
+interface OpenF1RaceControl {
+  date: string;
+  driver_number: number | null;
+  category: string;
+  flag: string | null;
+  lap_number: number | null;
+  meeting_key: number;
+  message: string;
+  scope: string | null;
+  sector: number | null;
+  session_key: number;
+}
+
+export interface RaceControlEvent {
+  date: Date;
+  lapNumber: number | null;
+  category: string;
+  flag: string | null;
+  message: string;
+  type: 'SC' | 'VSC' | 'RED_FLAG' | 'OTHER';
+}
+
 export interface LiveSessionOptions {
   sessionKey: number;
   pollingIntervalMs?: number;
@@ -529,6 +587,97 @@ export class OpenF1API {
       windDirection: 0,
       rainfall: false,
     };
+  }
+
+  /**
+   * Fetch race control messages (SC, VSC, flags, etc.)
+   */
+  async fetchRaceControl(sessionKey: number): Promise<RaceControlEvent[]> {
+    try {
+      const url = `/race_control?session_key=${sessionKey}`;
+      const response = await this.client.get<OpenF1RaceControl[]>(url);
+
+      return response.data.map((event) => {
+        let type: RaceControlEvent['type'] = 'OTHER';
+        const message = event.message.toUpperCase();
+        
+        if (message.includes('SAFETY CAR') && !message.includes('VIRTUAL')) {
+          type = 'SC';
+        } else if (message.includes('VIRTUAL SAFETY CAR') || message.includes('VSC')) {
+          type = 'VSC';
+        } else if (event.flag === 'RED' || message.includes('RED FLAG')) {
+          type = 'RED_FLAG';
+        }
+
+        return {
+          date: new Date(event.date),
+          lapNumber: event.lap_number,
+          category: event.category,
+          flag: event.flag,
+          message: event.message,
+          type,
+        };
+      });
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.error('Error fetching race control from OpenF1:', error);
+      }
+      return [];
+    }
+  }
+
+  /**
+   * Fetch pit stop data for a session
+   */
+  async fetchPitStops(sessionKey: number, driverNumber?: number): Promise<PitStopData[]> {
+    try {
+      let url = `/pit?session_key=${sessionKey}`;
+      if (driverNumber !== undefined) {
+        url += `&driver_number=${driverNumber}`;
+      }
+
+      const response = await this.client.get<OpenF1Pit[]>(url);
+
+      return response.data.map((pit) => ({
+        driverNumber: pit.driver_number,
+        lapNumber: pit.lap_number,
+        pitDuration: pit.pit_duration,
+        date: new Date(pit.date),
+      }));
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.error('Error fetching pit stops from OpenF1:', error);
+      }
+      return [];
+    }
+  }
+
+  /**
+   * Fetch stint/tire compound data for a session
+   */
+  async fetchStints(sessionKey: number, driverNumber?: number): Promise<StintData[]> {
+    try {
+      let url = `/stints?session_key=${sessionKey}`;
+      if (driverNumber !== undefined) {
+        url += `&driver_number=${driverNumber}`;
+      }
+
+      const response = await this.client.get<OpenF1Stint[]>(url);
+
+      return response.data.map((stint) => ({
+        driverNumber: stint.driver_number,
+        lapStart: stint.lap_start,
+        lapEnd: stint.lap_end,
+        compound: stint.compound,
+        stintNumber: stint.stint_number,
+        tyreAgeAtStart: stint.tyre_age_at_start,
+      }));
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.error('Error fetching stints from OpenF1:', error);
+      }
+      return [];
+    }
   }
 
   /**
